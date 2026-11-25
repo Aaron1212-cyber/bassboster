@@ -66,6 +66,36 @@ dialog p{margin:0 0 22px}
 dialog .row{justify-content:flex-end}
 footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
 @media(max-width:820px){.hero{grid-template-columns:1fr;min-height:0;padding-top:28px}.cone{order:-1;max-width:min(86vw,400px)}}
+@media(max-width:560px){
+ body{font-size:16px}
+ .wrap{padding-inline:16px}
+ .hero{gap:12px;padding-top:16px}
+ h1{font-size:clamp(52px,15vw,80px);margin-bottom:16px}
+ .lede{font-size:17px;margin-bottom:22px}
+ .cone{max-width:min(78vw,320px)}
+ .drop{gap:10px;padding:14px}
+ .drop .btn{width:100%}
+ .rail{margin:22px 0 8px;padding-top:34px}
+ .lv{padding:6px 2px 10px;min-width:0;overflow-wrap:anywhere}
+ .lv b{font-size:clamp(16px,5vw,25px)}
+ .lv span{font-size:clamp(11px,3.3vw,13px);line-height:1.25;display:block}
+ .player{gap:14px}
+ .row{gap:12px}
+ #seek{flex-basis:calc(100% - 84px)}
+ .time{font-size:13px}
+ .play{width:52px;height:52px}
+ .ab button{padding:10px 12px;font-size:14px}
+ #vol{width:min(92px,24vw)}
+ .btn{padding:12px 16px}
+ footer{padding:26px 0 40px}
+}
+@media(max-width:360px){
+ .wrap{padding-inline:12px}
+ .lv span{font-size:11px}
+ .player{padding:14px}
+ .row{column-gap:8px}
+ .ab button{padding-inline:9px}
+}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}.bar{display:none}}
 </style>
 </head>
