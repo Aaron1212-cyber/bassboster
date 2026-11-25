@@ -66,36 +66,6 @@ dialog p{margin:0 0 22px}
 dialog .row{justify-content:flex-end}
 footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
 @media(max-width:820px){.hero{grid-template-columns:1fr;min-height:0;padding-top:28px}.cone{order:-1;max-width:min(86vw,400px)}}
-@media(max-width:560px){
- body{font-size:16px}
- .wrap{padding-inline:16px}
- .hero{gap:12px;padding-top:16px}
- h1{font-size:clamp(52px,15vw,80px);margin-bottom:16px}
- .lede{font-size:17px;margin-bottom:22px}
- .cone{max-width:min(78vw,320px)}
- .drop{gap:10px;padding:14px}
- .drop .btn{width:100%}
- .rail{margin:22px 0 8px;padding-top:34px}
- .lv{padding:6px 2px 10px;min-width:0;overflow-wrap:anywhere}
- .lv b{font-size:clamp(16px,5vw,25px)}
- .lv span{font-size:clamp(11px,3.3vw,13px);line-height:1.25;display:block}
- .player{gap:14px}
- .row{gap:12px}
- #seek{flex-basis:calc(100% - 84px)}
- .time{font-size:13px}
- .play{width:52px;height:52px}
- .ab button{padding:10px 12px;font-size:14px}
- #vol{width:min(92px,24vw)}
- .btn{padding:12px 16px}
- footer{padding:26px 0 40px}
-}
-@media(max-width:360px){
- .wrap{padding-inline:12px}
- .lv span{font-size:11px}
- .player{padding:14px}
- .row{column-gap:8px}
- .ab button{padding-inline:9px}
-}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}.bar{display:none}}
 </style>
 </head>
@@ -148,11 +118,11 @@ footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
 /* ===== CONFIG: tuned against a reference bass boost (levels in dB, freqs in Hz) =====
    ls = low-shelf [freq, gain]; pk = peaking [freq, gain, Q]; sat = harmonic saturation mix of the <130 Hz mono bass;
    duck = how far mids (300 Hz-4 kHz) are pushed down on each bass hit; lp = gentle low-pass (0 = off) */
-const CFG={bias:1.5,ceil:.89,iters:5,levels:{
- 1:{name:'Warm',ls:[200,5],pk:[[45,5,1],[120,4,1],[190,5,.9]],sat:.6,duck:0,lp:0},
- 2:{name:'Heavy',ls:[200,7],pk:[[45,7,1],[120,6,1],[190,9,.9]],sat:1.2,duck:0,lp:0},
- 3:{name:'Destroyed',ls:[220,11],pk:[[40,9,1],[120,6,1],[190,9,.9]],sat:1.8,duck:.9,lp:3000},
- 4:{name:'Annihilate',ls:[240,14],pk:[[36,13,1],[120,8,1],[190,12,.9]],sat:2.8,duck:1,lp:2000,bias:3}}};
+const CFG={bias:2,ceil:.891,clip:.5,split:400,grMean:4.5,grP95:12,levels:{
+ 1:{name:'Warm',ls:[200,5],pk:[[45,5,1],[120,4,1],[190,5,.9]],sat:.6,duck:0,lp:0,bias:1.5,clip:.6},
+ 2:{name:'Heavy',ls:[200,7],pk:[[45,7,1],[120,6,1],[190,9,.9]],sat:1.2,duck:0,lp:0,bias:2.5,clip:.75},
+ 3:{name:'Destroyed',ls:[220,11],pk:[[40,9,1],[120,6,1],[190,9,.9]],sat:1.8,duck:.9,lp:3000,bias:1.2,clip:.85},
+ 4:{name:'Annihilate',ls:[240,14],pk:[[36,13,1],[120,8,1],[190,12,.9]],sat:2.8,duck:1,lp:2000,bias:2,clip:.89}}};
 const $=id=>document.getElementById(id),body=document.body;
 const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
 let ctx,an,master,orig,boosted=null,lvl=2,useBoost=true,playing=false,off=0,t0=0,srcs=[],gO,gB,trackName='track',busy=false,kick=0;
@@ -174,29 +144,68 @@ function buildMain(c,s,p){const sum=c.createGain();
  (p.lp?link(sum,bq(c,'lowpass',p.lp,0,.6)):sum).connect(c.destination)}
 const buildMid=(c,s)=>link(s,bq(c,'highpass',300),bq(c,'highpass',300),bq(c,'lowpass',4000)).connect(c.destination);
 const buildEnv=(c,s)=>{const m=c.createGain();m.channelCount=1;m.channelCountMode='explicit';s.connect(m);link(m,bq(c,'lowpass',130)).connect(c.destination)};
-function slidingMin(a,N){const n=a.length,o=new Float32Array(n),q=new Int32Array(n);let h=0,t=0,j=0;
- for(let i=0;i<n;i++){const r=Math.min(n-1,i+N);for(;j<=r;j++){while(t>h&&a[q[t-1]]>=a[j])t--;q[t++]=j}while(q[h]<i-N)h++;o[i]=a[q[h]]}return o}
+//BEGIN_FINISH
+/* ---------- loudness, bass-managed clipping, true-peak limiter (pure functions on Float32Arrays) ---------- */
+function coef(t,f,g,q,sr){const A=10**(g/40),w=2*Math.PI*f/sr,c=Math.cos(w),al=Math.sin(w)/(2*q);let b,a;
+ if(t==='hs'){const k=2*Math.sqrt(A)*al;b=[A*((A+1)+(A-1)*c+k),-2*A*((A-1)+(A+1)*c),A*((A+1)+(A-1)*c-k)];a=[(A+1)-(A-1)*c+k,2*((A-1)-(A+1)*c),(A+1)-(A-1)*c-k]}
+ else if(t==='hp'){b=[(1+c)/2,-(1+c),(1+c)/2];a=[1+al,-2*c,1-al]}else{b=[(1-c)/2,1-c,(1-c)/2];a=[1+al,-2*c,1-al]}
+ return[b[0]/a[0],b[1]/a[0],b[2]/a[0],a[1]/a[0],a[2]/a[0]]}
+function biq(x,q){let z1=0,z2=0;for(let i=0;i<x.length;i++){const v=x[i],o=q[0]*v+z1;z1=q[1]*v-q[3]*o+z2;z2=q[2]*v-q[4]*o;x[i]=o}}
+/* ITU-R BS.1770 style loudness: K-weighting, 400 ms blocks, absolute (-70) and relative (-10 LU) gates. Streaming, no big copies. */
+function lufs(Y,sr){const K=[coef('hs',1682,4,.7071,sr),coef('hp',38.1,0,.5,sr)],hop=Math.round(.1*sr),n=Y[0].length,e=[],st=[[0,0,0,0],[0,0,0,0]];let acc=0,cnt=0;
+ for(let i=0;i<n;i++){for(let c=0;c<2;c++){let x=Y[c][i];const s=st[c];for(let k=0;k<2;k++){const q=K[k],o=q[0]*x+s[2*k];s[2*k]=q[1]*x-q[3]*o+s[2*k+1];s[2*k+1]=q[2]*x-q[4]*o;x=o}acc+=x*x}
+  if(++cnt===hop){e.push(acc/hop);acc=0;cnt=0}}
+ const b=[];for(let i=0;i+4<=e.length;i++)b.push((e[i]+e[i+1]+e[i+2]+e[i+3])/4);
+ const L=v=>-.691+10*Math.log10(v+1e-12),ab=b.filter(v=>L(v)>-70);if(!ab.length)return-70;
+ const m=ab.reduce((s,v)=>s+v,0)/ab.length,g=ab.filter(v=>L(v)>L(m)-10);return L(g.reduce((s,v)=>s+v,0)/g.length)}
+function slidingMin(a,N,o,q){const n=a.length;let h=0,t=0,j=0;
+ for(let i=0;i<n;i++){const r=Math.min(n-1,i+N);for(;j<=r;j++){while(t>h&&a[q[t-1]]>=a[j])t--;q[t++]=j}while(q[h]<i-N)h++;o[i]=a[q[h]]}}
 function box(a,N,o){const n=a.length,h=N>>1;let s=0;for(let k=-h;k<=h;k++)s+=a[Math.min(n-1,Math.max(0,k))];
  for(let i=0;i<n;i++){o[i]=s/(2*h+1);s+=a[Math.min(n-1,i+h+1)]-a[Math.max(0,i-h)]}}
-function limiter(S,G,sr){const n=G.length,C=CFG.ceil,N=Math.round(.015*sr);
- for(let i=0;i<n;i++){const pk=Math.max(Math.abs(S[0][i]),Math.abs(S[1][i]))+1e-9;G[i]=pk>C?C/pk:1}
- const t=slidingMin(G,N);box(t,N,G);const a=1-Math.exp(-1/(.05*sr));let prev=1;
- for(let i=0;i<n;i++){prev=Math.min(G[i],prev+(1-prev)*a);G[i]=prev}}
-const rmsOf=Y=>{let s=0;for(const c of Y)for(let i=0;i<c.length;i++)s+=c[i]*c[i];return Math.sqrt(s/(2*Y[0].length))};
+/* look-ahead limiter: detects sample AND inter-sample (true) peaks via 4x windowed-sinc (16-tap) interpolation, 20 ms look-ahead, 80 ms release; gain never exceeds the ceiling */
+const TP=[.25,.5,.75].map(t=>{const w=[];for(let j=-7;j<=8;j++){const d=j-t,s=Math.abs(d)<1e-9?1:Math.sin(Math.PI*d)/(Math.PI*d);w.push(s*(.5+.5*Math.cos(Math.PI*d/8.5)))}return w});
+function limiter(S,G,T,Q,sr,ceil){const n=G.length,N=Math.round(.02*sr);
+ for(let i=0;i<n;i++){let pk=0;for(let c=0;c<2;c++){const x=S[c],a=Math.abs(x[i]);if(a>pk)pk=a;if(i>6&&i<n-9)for(let t=0;t<3;t++){const w=TP[t];let v=0;for(let j=0;j<16;j++)v+=w[j]*x[i-7+j];v=Math.abs(v);if(v>pk)pk=v}}G[i]=pk>ceil?ceil/pk:1}
+ slidingMin(G,N,T,Q);box(T,N,G);const a=1-Math.exp(-1/(.08*sr));let p=1;for(let i=0;i<n;i++){p=Math.min(G[i],p+(1-p)*a);G[i]=p}}
+function mixLim(LO,Y,S,G,T,Q,gd,Cl,sr){const n=G.length,g=10**(gd/20);
+ const C=CFG.ceil;for(let c=0;c<2;c++)for(let i=0;i<n;i++)S[c][i]=C*Math.tanh((Cl*Math.tanh(LO[c][i]*g/Cl)+Y[c][i]*g)/C);
+ limiter(S,G,T,Q,sr,CFG.ceil);for(let c=0;c<2;c++)for(let i=0;i<n;i++)S[c][i]*=G[i]}
+function grStats(G){const a=[];let s=0;for(let i=0;i<G.length;i+=8){const v=-20*Math.log10(G[i]);a.push(v);s+=v}a.sort((x,y)=>x-y);return{mean:s/a.length,p95:a[Math.floor(a.length*.95)]}}
+function subset(A,n,sr){const L=4*sr,k=6;if(n<=k*L*1.5)return A;const o=A.map(()=>new Float32Array(k*L));
+ for(let j=0;j<k;j++){const s=Math.max(0,Math.floor((j+.5)/k*n-L/2));A.forEach((a,i)=>o[i].set(a.subarray(s,s+L),j*L))}return o}
+/* Y = chain output (modified in place), O = original. Splits at 400 Hz and soft-clips the bass band first (so kick and 808 peaks can't force the mids down),
+   then applies a gentle full-band soft-clip and a true-peak limiter. The gain is searched on 6 sample excerpts: the loudest gain whose FINAL (post-limiter) K-weighted loudness is
+   <= original + bias AND whose limiter gain reduction stays under a cap (bisection, so it cannot run away). Then one full render. */
+async function finish(Y,O,sr,p,cb){const n=Y[0].length,Cl=p.clip??CFG.clip;
+ const LO=Y.map(y=>{const o=Float32Array.from(y);biq(o,coef('lp',CFG.split,0,.7071,sr));biq(o,coef('lp',CFG.split,0,.7071,sr));return o});
+ for(let c=0;c<2;c++)for(let i=0;i<n;i++)Y[c][i]-=LO[c][i];
+ const[a0,a1,b0,b1,o0,o1]=subset([LO[0],LO[1],Y[0],Y[1],O[0],O[1]],n,sr),m=a0.length,
+  S=[new Float32Array(m),new Float32Array(m)],G=new Float32Array(m),T=new Float32Array(m),Q=new Int32Array(m),tgt=lufs([o0,o1],sr)+p.bias;
+ const ev=gd=>{mixLim([a0,a1],[b0,b1],S,G,T,Q,gd,Cl,sr);const L=lufs(S,sr),g=grStats(G);return L<=tgt&&g.mean<=CFG.grMean&&g.p95<=CFG.grP95};
+ mixLim([a0,a1],[b0,b1],S,G,T,Q,0,Cl,sr);let lo=tgt-lufs(S,sr)-10,hi=lo+18;
+ for(let k=0;k<9&&hi-lo>.15;k++){const mid=(lo+hi)/2;ev(mid)?lo=mid:hi=mid;if(cb)await cb(k)}
+ const F=[new Float32Array(n),new Float32Array(n)],FG=new Float32Array(n);mixLim(LO,Y,F,FG,new Float32Array(n),new Int32Array(n),lo,Cl,sr);
+ const measureTP=()=>{let peak=0;const X=F[0],Z=F[1];for(let i=7;i<n-9;i++)for(let c=0;c<2;c++){const x=c?Z:X;for(let t=0;t<3;t++){const w=TP[t];let v=0;for(let j=0;j<16;j++)v+=w[j]*x[i-7+j];peak=Math.max(peak,Math.abs(v))}}return peak};
+ // Keep true-peak correction inside the gain search: regenerate the render at a
+ // lower gain instead of scaling the completed file after the limiter.
+ let tp=measureTP();for(let pass=0;tp>CFG.ceil*.999&&pass<8;pass++){
+  lo+=20*Math.log10((CFG.ceil*.999)/tp);
+  mixLim(LO,Y,F,FG,new Float32Array(n),new Int32Array(n),lo,Cl,sr);
+  tp=measureTP();
+ }
+ // Last-resort safety guard for unusual material that does not converge.
+ if(tp>CFG.ceil){const safe=CFG.ceil/tp;for(let c=0;c<2;c++)for(let i=0;i<n;i++)F[c][i]*=safe}
+ const g=grStats(FG);return{S:F,L:lufs(F,sr),gd:lo,meanGR:g.mean,p95GR:g.p95,tgt}}
+//END_FINISH
 async function process(l){const p=CFG.levels[l],sr=orig.sampleRate,n=orig.length;
  const main=await rnd(orig,(c,s)=>buildMain(c,s,p));const Y=[main.getChannelData(0),main.getChannelData(1)];
  if(p.duck){const mid=await rnd(orig,buildMid),env=(await rnd(orig,buildEnv)).getChannelData(0),M=[mid.getChannelData(0),mid.getChannelData(1)];
   const r=Math.exp(-1/(.12*sr)),sm=new Float32Array(n);let st=0;for(let i=0;i<n;i++){st=r*st+(1-r)*Math.abs(env[i]);sm[i]=st}
   const smp=[];for(let i=0;i<n;i+=16)smp.push(sm[i]);smp.sort((a,b)=>a-b);const ref=smp[Math.floor(smp.length*.92)]||1;
   for(let i=0;i<n;i++){const k=Math.min(1,sm[i]/ref)*p.duck;Y[0][i]-=M[0][i]*k;Y[1][i]-=M[1][i]*k}}
- await tick();
- const O=[orig.getChannelData(0),orig.getChannelData(1)],tgt=rmsOf(O)*10**((p.bias??CFG.bias)/20),C=CFG.ceil;
- let gt=tgt/rmsOf(Y);const S=[new Float32Array(n),new Float32Array(n)],G=new Float32Array(n);
- const run=()=>{for(let i=0;i<n;i++){S[0][i]=C*Math.tanh(Y[0][i]*gt/C);S[1][i]=C*Math.tanh(Y[1][i]*gt/C)}
-  limiter(S,G,sr);let ss=0;for(let i=0;i<n;i++){const g=G[i];ss+=(S[0][i]*g)**2+(S[1][i]*g)**2}return Math.sqrt(ss/(2*n))};
- for(let k=0;k<CFG.iters;k++){say(`Rendering ${p.name}… ${k+1}/${CFG.iters}`);gt*=Math.pow(tgt/run(),.9);await tick()}
- run();const out=ctx.createBuffer(2,n,sr);
- for(let c=0;c<2;c++){const d=out.getChannelData(c);for(let i=0;i<n;i++)d[i]=S[c][i]*G[i]}return out}
+ await tick();const O=[orig.getChannelData(0),orig.getChannelData(1)];
+ const r=await finish(Y,O,sr,p,async k=>{say(`Matching loudness, pass ${k+1}…`);await tick()});
+ const out=ctx.createBuffer(2,n,sr);out.copyToChannel(r.S[0],0);out.copyToChannel(r.S[1],1);return out}
 /* ---------- playback ---------- */
 const pos=()=>playing?Math.min(orig.duration,ctx.currentTime-t0):off;
 function stopSrc(){srcs.forEach(s=>{try{s.stop()}catch(e){}});srcs=[]}
@@ -216,7 +225,7 @@ async function setLevel(l){lvl=l;body.dataset.l=l;
  catch(e){say('Rendering failed. Try a shorter track or another browser.',1)}busy=false}
 /* ---------- file loading ---------- */
 async function load(f){if(!f)return;
- if(!/^audio\//.test(f.type)&&! /\.(mp3|wav|ogg)$/i.test(f.name)){say('That isn’t an audio file. Try an MP3, WAV or OGG.',1);return}
+ if(!/^audio\//.test(f.type)&&!/\.(mp3|wav|ogg)$/i.test(f.name)){say('That isn’t an audio file. Try an MP3, WAV or OGG.',1);return}
  if(f.size>60e6){say('That file is over 60 MB. Try a smaller one.',1);return}
  ensure();pause();say('Decoding…');
  try{const d=await ctx.decodeAudioData(await f.arrayBuffer());
@@ -251,19 +260,18 @@ document.querySelectorAll('.lv').forEach(b=>b.onclick=async()=>{const l=+b.datas
  if(l==4&&lvl!=4){if(!(await ask('Warning 1 of 2','Annihilate is far louder and more distorted than any other level. Turn your volume down to a quarter or less before you continue.')))return;
   if(!(await ask('Warning 2 of 2','Extreme bass can damage speakers and headphones and can hurt your ears. Don’t use it on small or cheap speakers, and stop if anything buzzes or rattles.')))return}
  setLevel(l)});
-/* ---------- playback controls ---------- */
 $('play').onclick=()=>{if(!boosted)return;playing?pause():start(off>=orig.duration-.05?0:off)};
 $('aOrig').onclick=()=>{useBoost=false;setAB()};$('aBoost').onclick=()=>{useBoost=true;setAB()};
 $('vol').oninput=e=>{if(master)master.gain.value=e.target.value/100};
 $('seek').oninput=e=>{if(!orig)return;const t=e.target.value/1000*orig.duration;playing?start(t):off=t};
-const cv=$('cv'),x=cv.getContext('2d');
 /* ---------- visuals: the subwoofer cone ---------- */
+const cv=$('cv'),x=cv.getContext('2d');
 function frame(){requestAnimationFrame(frame);const t=performance.now()/1000;
  if(orig){$('time').textContent=fmt(pos())+' / '+fmt(orig.duration);if(playing){$('seek').value=pos()/orig.duration*1000;if(pos()>=orig.duration-.02){pause();off=0}}}
  let k=0;if(an&&playing){an.getByteFrequencyData(fd);let s=0;for(let i=1;i<6;i++)s+=fd[i];k=s/5/255;k=Math.max(0,(k-.35)/.65)}
  kick+=(k-kick)*(k>kick?.55:.1);if(rm)kick=0;
  document.documentElement.style.setProperty('--kick',kick.toFixed(3));
- const sh=!rm&&playing&&lvl>1?kick*(lvl==4?13:lvl==3?7:2.5):0;$('stage').style.transform=sh?`translate(${(Math.random()-.5)*sh}px,${(Math.random()-.5)*sh}px)`:'';
+ const sh=!rm&&playing&&lvl>1?kick*(lvl==4?13:lvl==3?7:2.5):0;document.querySelector('.hero').style.transform=sh?`translate(${(Math.random()-.5)*sh}px,${(Math.random()-.5)*sh}px)`:'';
  const d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth*d,h=cv.clientHeight*d;if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
  const cx=w/2,cy=h/2,R=Math.min(w,h)*.33,acc=getComputedStyle(body).getPropertyValue('--acc').trim()||'#F0B35A';x.clearRect(0,0,w,h);
  for(let i=0;i<96;i++){const v=playing?fd[i+1]/255:.05+.03*Math.sin(t*.9+i*.35),a=i/96*Math.PI*2-Math.PI/2,r0=R*1.2,r1=r0+R*.55*Math.pow(v,1.5)+d;
