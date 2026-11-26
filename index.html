@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Subterra – bass boost your music</title>
+<title>Subterra 2 – deeper, cleaner bass</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800&family=Hanken+Grotesk:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -25,7 +25,7 @@ body.open .bar{height:0}
 #stage{will-change:transform}
 .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(16px,4vw,56px);align-items:center;min-height:90svh;padding:48px 0}
 h1{font:800 clamp(60px,11.5vw,158px)/.88 "Big Shoulders Display",Impact,"Arial Narrow",sans-serif;margin:0 0 24px;letter-spacing:-.01em;transform:translateY(calc(var(--kick)*16px)) scaleY(calc(1 - var(--kick)*.035));transform-origin:50% 100%;will-change:transform}
-.lede{max-width:34ch;color:var(--fog);font-size:19px;margin:0 0 32px}
+.lede{max-width:36ch;color:var(--fog);font-size:19px;margin:0 0 32px}
 .drop{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;padding:18px;border:1px dashed #3a3e49;border-radius:6px;transition:border-color .2s,background .2s}
 .drop.over{border-color:var(--acc);background:#15171d99}
 .btn{font:600 16px "Hanken Grotesk",sans-serif;cursor:pointer;border:1px solid var(--acc);color:var(--bone);background:transparent;padding:14px 22px;border-radius:4px;min-height:48px}
@@ -54,16 +54,39 @@ h2{font:800 clamp(34px,5vw,54px)/1 "Big Shoulders Display",Impact,sans-serif;mar
 input[type=range]{accent-color:var(--acc);height:32px;min-width:0}
 #seek{flex:1 1 200px}
 #vol{width:110px}
+.sld{display:flex;align-items:center;gap:10px;color:var(--fog);font-size:15px;flex:1 1 220px}
+.sld input{flex:1 1 120px;min-width:80px}
+.sld b{color:var(--bone);font-variant-numeric:tabular-nums;min-width:46px;text-align:right}
+.sld i{font-style:normal;min-width:52px}
 .time{font-variant-numeric:tabular-nums;color:var(--fog);font-size:15px}
 .ab{display:inline-flex;border:1px solid #3a3e49;border-radius:4px;overflow:hidden}
 .ab button{background:none;border:0;color:var(--fog);font:600 15px "Hanken Grotesk",sans-serif;padding:12px 18px;cursor:pointer;min-height:48px}
 .ab button[aria-pressed=true]{background:var(--bone);color:#0a0a0c}
 .sm{color:var(--fog);font-size:14px;margin:0}
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{border:1px solid #3a3e49;border-radius:99px;padding:6px 14px;font-size:14px;color:var(--fog)}
+.chip b{color:var(--bone);font-variant-numeric:tabular-nums}
+.chip.hi{border-color:var(--acc)}
+.chip.hi b{color:var(--acc)}
+.grw{display:flex;align-items:center;gap:12px;min-width:230px;flex:1 1 230px}
+.grlab{color:var(--fog);font-size:14px;white-space:nowrap}
+.grbar{position:relative;flex:1;height:8px;background:#22252d;border-radius:4px;overflow:hidden;min-width:70px}
+.grfill{position:absolute;inset:0;width:0;background:var(--acc);transition:width .08s linear}
+.grval{color:var(--bone);font-variant-numeric:tabular-nums;font-size:14px;min-width:58px;text-align:right}
+.specwrap{border:1px solid #23262e;border-radius:8px;padding:14px 14px 10px;background:#0c0d11}
+.specwrap h3{margin:0 0 4px;font:800 20px/1.2 "Big Shoulders Display",Impact,sans-serif;color:var(--fog);letter-spacing:.02em}
+#spec{width:100%;height:150px;display:block}
+.legend{display:flex;gap:18px;color:var(--fog);font-size:13px;margin-top:8px;padding-left:2px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend .o{background:#4a4f5a}
+.legend .b{background:var(--acc)}
 dialog{background:var(--surf);color:var(--bone);border:1px solid var(--ember);border-radius:10px;width:min(440px,90vw);padding:28px}
 dialog::backdrop{background:rgba(0,0,0,.85)}
 dialog h3{font:800 34px/1 "Big Shoulders Display",Impact,sans-serif;margin:0 0 12px;color:var(--ember)}
 dialog p{margin:0 0 22px}
 dialog .row{justify-content:flex-end}
+.chk{display:flex;gap:10px;align-items:center;color:var(--fog);font-size:15px;margin:0 0 22px;cursor:pointer}
+.chk input{width:18px;height:18px;accent-color:var(--acc)}
 footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
 @media(max-width:820px){.hero{grid-template-columns:1fr;min-height:0;padding-top:28px}.cone{order:-1;max-width:min(86vw,400px)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}.bar{display:none}}
@@ -76,7 +99,7 @@ footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
 <section class="hero">
  <div>
   <h1>Feel the floor move.</h1>
-  <p class="lede">Drop in a track. Choose how much low end you can take. It all runs in your browser.</p>
+  <p class="lede">Drop in a track. Push the depth. A pitch-tracked sub synth builds the low end EQ can't reach, the mids stay untouched, and nothing gets clipped. All in your browser.</p>
   <div class="drop" id="drop">
    <button class="btn pri" id="pick">Choose a track</button>
    <span class="hint">or drop an MP3, WAV or OGG here</span>
@@ -87,18 +110,18 @@ footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
  <div class="cone"><canvas id="cv" aria-label="Live subwoofer visualiser"></canvas></div>
 </section>
 <section class="deck">
- <h2>How hard?</h2>
+ <h2>How deep?</h2>
  <div class="rail" id="rail" role="radiogroup" aria-label="Bass level">
   <div class="thumb" id="thumb"></div>
-  <button class="lv" role="radio" data-l="1" aria-checked="false"><b>Warm</b><span>Fuller and tighter</span></button>
-  <button class="lv" role="radio" data-l="2" aria-checked="true"><b>Heavy</b><span>Club-level low end</span></button>
-  <button class="lv" role="radio" data-l="3" aria-checked="false"><b>Destroyed</b><span>The lyrics disappear</span></button>
-  <button class="lv" role="radio" data-l="4" aria-checked="false"><b>Annihilate</b><span>Beyond destroyed</span></button>
+  <button class="lv" role="radio" data-l="1" aria-checked="false"><b>Warm</b><span>Tighter low end, no grit</span></button>
+  <button class="lv" role="radio" data-l="2" aria-checked="true"><b>Heavy</b><span>Club-level sub</span></button>
+  <button class="lv" role="radio" data-l="3" aria-checked="false"><b>Deep</b><span>True sub extension</span></button>
+  <button class="lv" role="radio" data-l="4" aria-checked="false"><b>Annihilate</b><span>20 Hz floor. Max depth</span></button>
  </div>
  <p id="warn"></p>
  <div class="player">
   <div class="row">
-   <button class="play" id="play" disabled aria-label="Play">▶</button>
+   <button class="play" id="play" disabled aria-label="Play">&#9654;</button>
    <input type="range" id="seek" min="0" max="1000" value="0" disabled aria-label="Seek">
    <span class="time" id="time">0:00 / 0:00</span>
   </div>
@@ -107,133 +130,711 @@ footer{padding:32px 0 56px;color:var(--fog);font-size:14px}
    <label class="time">Volume <input type="range" id="vol" min="0" max="100" value="50"></label>
    <button class="btn" id="dl" disabled>Download</button>
   </div>
-  <p class="sm" id="dlnote">Original and boosted play at matched loudness, so the comparison is fair. The download saves a WAV inside a .zip.</p>
+  <div class="row">
+   <label class="sld"><i>Depth</i><input type="range" id="dep" min="0" max="100" value="60" disabled aria-label="Depth"><b id="depV">60%</b></label>
+   <label class="sld"><i>Drive</i><input type="range" id="drv" min="0" max="100" value="27" disabled aria-label="Drive"><b id="drvV">27%</b></label>
+  </div>
+  <div class="row">
+   <div class="grw"><span class="grlab">Limiter</span><div class="grbar"><div class="grfill" id="grFill"></div></div><span class="grval" id="grVal">0.0 dB</span></div>
+   <div class="chips">
+    <span class="chip hi" id="cLow">Low end <b>+0.0 dB</b></span>
+    <span class="chip" id="cVoc">Vocals <b>&plusmn;0.0 dB</b></span>
+    <span class="chip" id="cLim">Peak GR <b>0.0 dB</b></span>
+   </div>
+  </div>
+  <p class="sm" id="dlnote">The A/B is fair: vocals sit at the original level, the boost is all low end. Download saves a WAV (zipped where required).</p>
+ </div>
+ <div class="specwrap">
+  <h3>SPECTRUM &ndash; ORIGINAL VS BOOSTED</h3>
+  <canvas id="spec" aria-label="Third-octave spectrum comparison"></canvas>
+  <div class="legend"><span><i class="o"></i>Original</span><span><i class="b"></i>Boosted</span></div>
  </div>
 </section>
 <footer>Your audio never leaves this device. Everything is processed locally in your browser.</footer>
 </div>
 </main>
-<dialog id="gate" aria-labelledby="gh"><h3 id="gh"></h3><p id="gmsg"></p><div class="row"><button class="btn" id="gno">Cancel</button><button class="btn pri" id="gok" disabled>Wait 3…</button></div></dialog>
+<dialog id="gate" aria-labelledby="gh"><h3 id="gh"></h3><p id="gmsg"></p><label class="chk" id="safeRow" hidden><input type="checkbox" id="safe"> Protect small speakers (roll off below ~30 Hz)</label><div class="row"><button class="btn" id="gno">Cancel</button><button class="btn pri" id="gok" disabled>Wait 3&hellip;</button></div></dialog>
 <script>
-/* ===== CONFIG: tuned against a reference bass boost (levels in dB, freqs in Hz) =====
-   ls = low-shelf [freq, gain]; pk = peaking [freq, gain, Q]; sat = harmonic saturation mix of the <130 Hz mono bass;
-   duck = how far mids (300 Hz-4 kHz) are pushed down on each bass hit; lp = gentle low-pass (0 = off) */
-const CFG={bias:2,ceil:.891,clip:.5,split:400,grMean:4.5,grP95:12,levels:{
- 1:{name:'Warm',ls:[200,5],pk:[[45,5,1],[120,4,1],[190,5,.9]],sat:.6,duck:0,lp:0,bias:1.5,clip:.6},
- 2:{name:'Heavy',ls:[200,7],pk:[[45,7,1],[120,6,1],[190,9,.9]],sat:1.2,duck:0,lp:0,bias:2.5,clip:.75},
- 3:{name:'Destroyed',ls:[220,11],pk:[[40,9,1],[120,6,1],[190,9,.9]],sat:1.8,duck:.9,lp:3000,bias:1.2,clip:.85},
- 4:{name:'Annihilate',ls:[240,14],pk:[[36,13,1],[120,8,1],[190,12,.9]],sat:2.8,duck:1,lp:2000,bias:2,clip:.89}}};
+/* =====================================================================
+   Subterra v2 — DSP core
+   Pure offline processing: no DOM, no Web Audio. The exact same file is
+   embedded into the page and loaded by the Node test harness.
+
+   Chain (level 1..4, depth / drive sliders 0..1):
+     in -> HP 18 Hz (4th order, infra & DC protection)
+        -> LR4 split:  SUB  = LP4 @65   (low branch)
+                       BASS = LP4 @160 of the HP4 @65 branch
+                       MID  = HP4 @160  (high branch)
+          SUB : low-shelf 60 Hz + bell 30 Hz -> soft-knee comp 2.5:1
+                + subharmonic synth (pitch-tracked f/2 sine, gated)
+                -> peak guard (max -6 dB, fast)
+          BASS: bell 90 + bell 140 -> peak-riding comp 3:1
+                + parallel grit: tanh copy band-limited to 110-330 Hz
+          MID : untouched
+     sum -> trim so K-weighted loudness above 160 Hz matches the original
+         -> true-peak look-ahead limiter (-1 dBTP, 4x inter-sample detect)
+         -> optional speaker-safe HP 28 Hz
+
+   The mid-band loudness match keeps vocals identical in A/B while the
+   low end sits deliberately above the original. No waveshaper anywhere
+   in the main path; the only saturation is the band-limited parallel
+   grit copy scaled by the Drive slider.
+   ===================================================================== */
+(function (root, factory) {
+  if (typeof module !== 'undefined' && module.exports) module.exports = factory();
+  else root.SDSP = factory();
+})(typeof self !== 'undefined' ? self : this, function () {
+'use strict';
+
+const TAU = Math.PI * 2;
+const clamp = (v, a, b) => v < a ? a : v > b ? b : v;
+
+/* ---------------- RBJ biquad cookbook -> [b0,b1,b2,a1,a2] ---------------- */
+function coef(type, f, g, q, sr) {
+  const A = Math.pow(10, g / 40), w = TAU * Math.min(f, sr * .45) / sr,
+        c = Math.cos(w), s = Math.sin(w), al = s / (2 * q);
+  let b, a;
+  switch (type) {
+    case 'lp': b = [(1 - c) / 2, 1 - c, (1 - c) / 2]; a = [1 + al, -2 * c, 1 - al]; break;
+    case 'hp': b = [(1 + c) / 2, -(1 + c), (1 + c) / 2]; a = [1 + al, -2 * c, 1 - al]; break;
+    case 'pk': b = [1 + al * A, -2 * c, 1 - al * A]; a = [1 + al / A, -2 * c, 1 - al / A]; break;
+    case 'ls': {
+      const k = 2 * Math.sqrt(A) * al;
+      b = [A * ((A + 1) - (A - 1) * c + k), 2 * A * ((A - 1) - (A + 1) * c), A * ((A + 1) - (A - 1) * c - k)];
+      a = [(A + 1) + (A - 1) * c + k, -2 * ((A - 1) + (A + 1) * c), (A + 1) + (A - 1) * c - k]; break;
+    }
+    case 'hs': {
+      const k = 2 * Math.sqrt(A) * al;
+      b = [A * ((A + 1) + (A - 1) * c + k), -2 * A * ((A - 1) + (A + 1) * c), A * ((A + 1) + (A - 1) * c - k)];
+      a = [(A + 1) - (A - 1) * c + k, 2 * ((A - 1) - (A + 1) * c), (A + 1) - (A - 1) * c - k]; break;
+    }
+    default: throw new Error('coef: unknown type ' + type);
+  }
+  const a0 = a[0];
+  return [b[0] / a0, b[1] / a0, b[2] / a0, a[1] / a0, a[2] / a0];
+}
+const nst = () => [0, 0];                                   // TDF2 state [z1,z2]
+function biqRun(st, q, v) {                                 // one sample
+  const o = q[0] * v + st[0];
+  st[0] = q[1] * v - q[3] * o + st[1];
+  st[1] = q[2] * v - q[4] * o;
+  return o;
+}
+function biqIn(st, q, x) {                                  // in place, keeps state
+  let z1 = st[0], z2 = st[1];
+  for (let i = 0; i < x.length; i++) {
+    const v = x[i], o = q[0] * v + z1;
+    z1 = q[1] * v - q[3] * o + z2;
+    z2 = q[2] * v - q[4] * o;
+    x[i] = o;
+  }
+  st[0] = z1; st[1] = z2;
+  return x;
+}
+function biq4In(q, x) { biqIn(nst(), q, x); biqIn(nst(), q, x); return x; }  // 4th order
+
+/* ---------------- FFT (in-place radix-2) ---------------- */
+function fft(re, im) {
+  const n = re.length;
+  for (let i = 1, j = 0; i < n; i++) {
+    let bit = n >> 1;
+    for (; j & bit; bit >>= 1) j ^= bit;
+    j ^= bit;
+    if (i < j) { let t = re[i]; re[i] = re[j]; re[j] = t; t = im[i]; im[i] = im[j]; im[j] = t; }
+  }
+  for (let len = 2; len <= n; len <<= 1) {
+    const ang = -TAU / len, wr = Math.cos(ang), wi = Math.sin(ang), h = len >> 1;
+    for (let i = 0; i < n; i += len) {
+      let cr = 1, ci = 0;
+      for (let j = 0; j < h; j++) {
+        const ur = re[i + j], ui = im[i + j],
+              xr = re[i + j + h] * cr - im[i + j + h] * ci,
+              xi = re[i + j + h] * ci + im[i + j + h] * cr;
+        re[i + j] = ur + xr; im[i + j] = ui + xi;
+        re[i + j + h] = ur - xr; im[i + j + h] = ui - xi;
+        const t = cr * wr - ci * wi; ci = cr * wi + ci * wr; cr = t;
+      }
+    }
+  }
+}
+
+/* ---------------- ITU-R BS.1770 style gated loudness (LUFS) ----------------
+   K-weighting, 100 ms hops, 400 ms blocks, -70 LUFS absolute and -10 LU
+   relative gates. Streams over the buffers, no copies. */
+function lufs(Y, sr) {
+  const K = [coef('hs', 1682, 4, .7071, sr), coef('hp', 38.1, 0, .5, sr)],
+        hop = Math.round(.1 * sr), n = Y[0].length, e = [],
+        st = [[nst(), nst()], [nst(), nst()]];
+  let acc = 0, cnt = 0;
+  for (let i = 0; i < n; i++) {
+    for (let c = 0; c < 2; c++) {
+      let x = Y[c][i]; const s = st[c];
+      for (let k = 0; k < 2; k++) x = biqRun(s[k], K[k], x);
+      acc += x * x;
+    }
+    if (++cnt === hop) { e.push(acc / hop); acc = 0; cnt = 0; }
+  }
+  const b = [];
+  for (let i = 0; i + 4 <= e.length; i++) b.push((e[i] + e[i + 1] + e[i + 2] + e[i + 3]) / 4);
+  const L = v => -.691 + 10 * Math.log10(v + 1e-12),
+        ab = b.filter(v => L(v) > -70);
+  if (!ab.length) return -70;
+  const m = ab.reduce((s, v) => s + v, 0) / ab.length,
+        g = ab.filter(v => L(v) > L(m) - 10);
+  return L(g.reduce((s, v) => s + v, 0) / g.length);
+}
+
+/* ---------------- third-octave band energies (for the UI graph) ---------------- */
+const CENTERS = [20, 25, 31.5, 40, 50, 63, 80, 100, 125, 160, 200, 250, 315, 400, 500, 630,
+                 800, 1000, 1250, 1600, 2000, 2500, 3150, 4000, 5000, 6300, 8000, 10000, 12500, 16000];
+function thirdOctave(L, R, sr) {
+  const n = L.length;
+  const N = 16384;
+  const binHz = sr / N, out = [], nCh = Math.min(8, Math.max(1, Math.floor(n / N))),
+        win = new Float32Array(N);
+  for (let i = 0; i < N; i++) win[i] = .5 - .5 * Math.cos(TAU * i / N);
+  const edges = CENTERS.map(c => {
+    const k0 = Math.max(1, Math.ceil(c * Math.pow(2, -1 / 6) / binHz)),
+          k1 = Math.min(N / 2 - 1, Math.floor(c * Math.pow(2, 1 / 6) / binHz));
+    return k1 > k0 ? [k0, k1] : null;
+  });
+  const sums = CENTERS.map(() => 0);
+  const re = new Float32Array(N), im = new Float32Array(N);
+  for (let ch = 0; ch < nCh; ch++) {
+    const off = Math.min(n - N, Math.floor(ch * (n - N) / Math.max(1, nCh - 1)));
+    for (const src of [L, R]) {
+      for (let i = 0; i < N; i++) { re[i] = src[off + i] * win[i]; im[i] = 0; }
+      fft(re, im);
+      for (let b = 0; b < CENTERS.length; b++) {
+        const e = edges[b];
+        if (!e) continue;
+        let s = 0;
+        for (let k = e[0]; k <= e[1]; k++) s += re[k] * re[k] + im[k] * im[k];
+        sums[b] += s;
+      }
+    }
+  }
+  for (let b = 0; b < CENTERS.length; b++) {
+    out.push(edges[b] ? 10 * Math.log10(sums[b] / (nCh * 2) + 1e-20) : -120);
+  }
+  return out;
+}
+
+/* ---------------- sub-band analysis for the subharmonic synth ----------------
+   Mono low band, decimated to ~1100 Hz, FFT frame pitch tracker over
+   30-95 Hz with parabolic refinement, median smoothing, amplitude gate. */
+function analyzeBass(L, R, sr) {
+  const n = L.length, D = Math.max(1, Math.round(sr / 1100)), dsr = sr / D;
+  const mLen = Math.ceil(n / D), m = new Float32Array(mLen);
+  const qs = coef('lp', 160, 0, .7071, sr), st = [nst(), nst(), nst(), nst()];
+  let j = 0;
+  for (let i = 0; i < n; i++) {
+    let v = (L[i] + R[i]) * .5;
+    v = biqRun(st[0], qs, v); v = biqRun(st[1], qs, v);
+    v = biqRun(st[2], qs, v); v = biqRun(st[3], qs, v);
+    if (i % D === 0) m[j++] = v;
+  }
+  const N = 512, HOP = 128, binHz = dsr / N;
+  if (mLen < N) return { D, HOP, fsr: dsr / HOP, fa: new Float32Array([40, 40]), ea: new Float32Array([0, 0]), scale: 1 };
+  const K = Math.max(2, Math.floor((mLen - N) / HOP) + 1);
+  const win = new Float32Array(N);
+  for (let i = 0; i < N; i++) win[i] = .5 - .5 * Math.cos(TAU * i / N);
+  const b0 = Math.max(1, Math.round(30 / binHz)), b1 = Math.min(N / 2 - 2, Math.round(95 / binHz)),
+        bLo = Math.max(1, Math.round(20 / binHz)), bMid = Math.round(35 / binHz),
+        bUp = Math.min(N / 2 - 1, Math.round(160 / binHz));
+  const re = new Float32Array(N), im = new Float32Array(N);
+  const fa = new Float32Array(K), ea = new Float32Array(K);
+  let eLow = 0, eUp = 0;
+  for (let k = 0; k < K; k++) {
+    const off = k * HOP;
+    for (let t = 0; t < N; t++) { re[t] = m[off + t] * win[t]; im[t] = 0; }
+    fft(re, im);
+    let pk = b0, pv = -1, band = 0;
+    for (let i = b0; i <= b1; i++) {
+      const p = re[i] * re[i] + im[i] * im[i];
+      band += p;
+      if (p > pv) { pv = p; pk = i; }
+    }
+    for (let i = bLo; i <= bUp; i++) {
+      const p = re[i] * re[i] + im[i] * im[i];
+      if (i < bMid) eLow += p; else eUp += p;
+    }
+    const l = Math.max(b0, pk - 1), r = Math.min(b1, pk + 1),
+          al = re[l] * re[l] + im[l] * im[l], be = pv, ga = re[r] * re[r] + im[r] * im[r],
+          den = al - 2 * be + ga,
+          shift = den !== 0 ? clamp(.5 * (al - ga) / den, -.5, .5) : 0;
+    fa[k] = clamp((pk + shift) * binHz, 28, 100);
+    ea[k] = 4 * Math.sqrt(band) / N;
+  }
+  /* median-3 on the pitch track */
+  const fm = Float32Array.from(fa);
+  for (let k = 1; k < K - 1; k++) {
+    const a = fa[k - 1], b = fa[k], c = fa[k + 1];
+    fm[k] = a > b ? (b > c ? b : a > c ? c : a) : (a > c ? a : b > c ? c : b);
+  }
+  /* amplitude: gate relative to p95, smooth 25 ms / 200 ms at frame rate */
+  const sorted = Float32Array.from(ea).sort();
+  const ref = sorted[Math.floor(K * .95)] || 0, gate = .06 * ref;
+  const fsr = dsr / HOP, aA = Math.exp(-1 / (.025 * fsr)), aR = Math.exp(-1 / (.2 * fsr));
+  const es = new Float32Array(K);
+  let e = 0;
+  for (let k = 0; k < K; k++) {
+    const tgt = ea[k] < gate ? 0 : ea[k];
+    e = tgt > e ? e + (tgt - e) * aA : e + (tgt - e) * aR;
+    es[k] = e;
+  }
+  /* auto-detect: how much real deep sub (20-35 Hz) vs upper bass (35-160 Hz).
+     Tracks whose fundamentals already live below ~35 Hz get less synth. */
+  const r = Math.sqrt(eLow / (eUp + 1e-12));
+  const scale = clamp(1.3 - 1.6 * r, .2, 1);
+  return { D, HOP, fsr, fa: fm, ea: es, scale };
+}
+
+/* ---------------- compressor gain (dB domain, soft knee) ---------------- */
+function compGr(over, ratio, knee) {
+  if (over <= -knee * .5) return 0;
+  if (over >= knee * .5) return (1 - 1 / ratio) * over;
+  const t = over + knee * .5;
+  return (1 - 1 / ratio) * t * t / (2 * knee);
+}
+
+/* ---------------- true-peak look-ahead limiter ----------------
+   16-tap windowed-sinc interpolation at 3 fractional offsets detects
+   inter-sample peaks; 20 ms sliding-min + box smoothing; 80 ms release.
+   Reads SL/SR, writes OL/OR = SL/SR * gain reduction. Returns mean GR
+   per 5 ms block (dB), for the UI meter. */
+const TPW = (function () {
+  return [.25, .5, .75].map(t => {
+    const w = [];
+    for (let j = -7; j <= 8; j++) {
+      const d = j - t,
+            s = Math.abs(d) < 1e-9 ? 1 : Math.sin(Math.PI * d) / (Math.PI * d);
+      w.push(s * (.5 + .5 * Math.cos(Math.PI * d / 8.5)));
+    }
+    return w;
+  });
+})();
+function limit(SL, SR, OL, OR, sr, ceil, G, T, Q, onChunk, relSec) {
+  const n = SL.length, N = Math.round(.02 * sr);
+  /* pass 1: required gain per sample (skip inter-sample scan when far below ceiling) */
+  for (let i = 0; i < n; i++) {
+    if ((i & 1048575) === 0 && onChunk) onChunk(i);
+    const aL = Math.abs(SL[i]), aR = Math.abs(SR[i]);
+    let pk = aL > aR ? aL : aR;
+    if (pk > .72 * ceil && i > 6 && i < n - 9) {
+      for (let t = 0; t < 3; t++) {
+        const w = TPW[t];
+        let vL = 0, vR = 0;
+        for (let j2 = 0; j2 < 16; j2++) { vL += w[j2] * SL[i - 7 + j2]; vR += w[j2] * SR[i - 7 + j2]; }
+        vL = Math.abs(vL); vR = Math.abs(vR);
+        if (vL > pk) pk = vL;
+        if (vR > pk) pk = vR;
+      }
+    }
+    G[i] = pk > ceil ? ceil / pk : 1;
+  }
+  /* pass 2: sliding min (look-ahead), box smoothing, exponential release */
+  {
+    let h = 0, t = 0, j = 0;
+    for (let i = 0; i < n; i++) {
+      const r = Math.min(n - 1, i + N);
+      for (; j <= r; j++) { while (t > h && G[Q[t - 1]] >= G[j]) t--; Q[t++] = j; }
+      while (Q[h] < i - N) h++;
+      T[i] = G[Q[h]];
+    }
+  }
+  {
+    const H = N >> 1;
+    let s = 0;
+    for (let k = -H; k <= H; k++) s += T[Math.min(n - 1, Math.max(0, k))];
+    for (let i = 0; i < n; i++) {
+      G[i] = s / (2 * H + 1);
+      s += T[Math.min(n - 1, i + H + 1)] - T[Math.max(0, i - H)];
+    }
+  }
+  const rel = 1 - Math.exp(-1 / ((relSec || .045) * sr));
+  let p = 1;
+  const blk = Math.max(1, Math.round(sr / 200)), gr = [];
+  let acc = 0, cnt = 0;
+  for (let i = 0; i < n; i++) {
+    p = Math.min(G[i], p + (1 - p) * rel);
+    OL[i] = SL[i] * p; OR[i] = SR[i] * p;
+    acc += p;
+    if (++cnt === blk) { gr.push(-20 * Math.log10(acc / cnt + 1e-9)); acc = 0; cnt = 0; }
+  }
+  return gr;
+}
+
+/* =====================================================================
+   processTrack — the full offline render
+   o: { depth, drive, level, safeHp, ceiling, debug }
+   prog(name, frac) -> awaited between chunks so the page stays alive.
+   Returns { L, R, gr, dbgS, m:{...metrics} }
+   ===================================================================== */
+const LEVELS = {
+  1: { synth: .12 },
+  2: { synth: .35 },
+  3: { synth: .60 },
+  4: { synth: .85 }
+};
+
+async function processTrack(oL, oR, sr, o, prog) {
+  prog = prog || (async () => {});
+  const n = oL.length;
+  if (oR.length !== n) throw new Error('channel length mismatch');
+  const depth = clamp(+o.depth || 0, 0, 1), drive = clamp(+o.drive || 0, 0, 1);
+  const lv = LEVELS[o.level] || LEVELS[2];
+  const ceil = o.ceiling || .891;
+
+  /* preset math (gains in dB unless noted). The sub EQ is depth-driven:
+     bell 40 Hz (where 808 fundamentals live) + shelf 32 Hz (floor extension) */
+  const bell40G = 8 * depth,
+        shelf32G = 1.5 + 5 * depth,
+        bell90G = 2 + 2.5 * depth, bell140G = 1 + 2 * depth,
+        synthMix = lv.synth * depth,
+        gritMix = .30 * drive, gritK = 1 + 3 * drive,
+        subThr = -5 - 2 * depth, subKnee = 6, subRatio = 2.5, subMax = .5 + 6.5 * depth,
+        bsThr = -6 - 2 * depth, bsKnee = 8, bsRatio = 2.5, bsMax = .5 + 4.5 * depth;
+
+  /* filter coefficient sets */
+  const qH = coef('hp', 18, 0, .7071, sr),
+        q65l = coef('lp', 65, 0, .7071, sr), q65h = coef('hp', 65, 0, .7071, sr),
+        q160l = coef('lp', 160, 0, .7071, sr), q160h = coef('hp', 160, 0, .7071, sr),
+        qM = coef('hp', 400, 0, .7071, sr),
+        qS60 = coef('ls', 32, shelf32G, .7071, sr), qS30 = coef('pk', 40, bell40G, 1, sr),
+        qB90 = coef('pk', 90, bell90G, 1, sr), qB140 = coef('pk', 140, bell140G, 1, sr),
+        qGlp = coef('lp', 330, 0, .7071, sr), qGhp = coef('hp', 110, 0, .7071, sr),
+        qSylp = coef('lp', 60, 0, .7071, sr), qSyh = coef('hp', 18, 0, .7071, sr);
+
+  /* dynamics constants */
+  const de = Math.exp(-1 / (.005 * sr)), drel = Math.exp(-1 / (.12 * sr)),
+        aSubAt = Math.exp(-1 / (.005 * sr)), aSubRel = Math.exp(-1 / (.06 * sr)),
+        aBsAt = Math.exp(-1 / (.015 * sr)), aBsRel = Math.exp(-1 / (.12 * sr)),
+        gAt = Math.exp(-1 / (.0005 * sr)), gRel = Math.exp(-1 / (.05 * sr)),
+        GC = 2.0, GMIN = .35, D2 = 20 / Math.LN10;   // guard bypassed: sub comp + path limiters own peak control
+
+  await prog('Cleaning & splitting', .02);
+
+  /* synth analysis on the original (pre-EQ) low end */
+  let A = { D: 1, HOP: 1, fa: [40, 40], ea: [0, 0], scale: 1 };
+  if (synthMix > 0 && n > sr) {
+    await prog('Analyzing low end', .08);
+    A = analyzeBass(oL, oR, sr);
+  }
+  const synthGain = synthMix * A.scale,
+        { D, HOP, fa, ea } = A, K = fa.length;
+
+  /* build: streaming split + EQ + dynamics + synth + grit.
+     Three paths: SB = guard-capped sub (+synth), BA = bass + grit,
+     TP = mid/top (untouched). Limited separately, summed at the end. */
+  await prog('Building depth', .12);
+  const SB0 = new Float32Array(n), SB1 = new Float32Array(n),
+        BA0 = new Float32Array(n), BA1 = new Float32Array(n),
+        TP0 = new Float32Array(n), TP1 = new Float32Array(n),
+        dbgS = o.debug ? new Float32Array(n) : null;
+  const c0 = { h: [nst(), nst()], a: [nst(), nst()], b: [nst(), nst()], c: [nst(), nst()], d: [nst(), nst()],
+               s60: nst(), s30: nst(), b90: nst(), b140: nst(), glp: nst(), ghp: nst() },
+        c1 = { h: [nst(), nst()], a: [nst(), nst()], b: [nst(), nst()], c: [nst(), nst()], d: [nst(), nst()],
+               s60: nst(), s30: nst(), b90: nst(), b140: nst(), glp: nst(), ghp: nst() },
+        syL = [nst(), nst()], syH = [nst(), nst()];
+  let subE = 0, subG = 1, bsE = 0, bsG = 1, gdE = 0, gdG = 1, ph = 0;
+
+  for (let i = 0; i < n; i++) {
+    if ((i & 524287) === 0) await prog('Building depth', .12 + .45 * i / n);
+    /* synth (mono, pitch-tracked f/2 sine) */
+    let sy = 0;
+    if (synthGain > 0) {
+      /* frame whose 512-sample analysis window is centered on this sample */
+      const ft = (i / D - 256) / HOP;
+      let k0 = Math.floor(ft);
+      if (k0 > K - 2) k0 = K - 2; if (k0 < 0) k0 = 0;
+      const fr = clamp(ft - k0, 0, 1),
+            f = fa[k0] + (fa[k0 + 1] - fa[k0]) * fr,
+            a = ea[k0] + (ea[k0 + 1] - ea[k0]) * fr;
+      ph += TAU * (f * .5) / sr;
+      if (ph > TAU) ph -= TAU;
+      sy = biqRun(syL[0], qSylp, a * Math.sin(ph) * synthGain);
+      sy = biqRun(syL[1], qSylp, sy);
+      sy = biqRun(syH[0], qSyh, sy);          // keep synth >= ~18 Hz
+      if (dbgS) dbgS[i] = sy;
+    }
+    /* phase A: split both channels (raw sub pre-EQ, bass band, mid band) */
+    let rs0, rs1, bass0, bass1, mid0, mid1;
+    { /* channel 0 */
+      let v = biqRun(c0.h[0], qH, oL[i]); v = biqRun(c0.h[1], qH, v);      // HP18 (4th)
+      let s = biqRun(c0.a[0], q65l, v); s = biqRun(c0.a[1], q65l, s);      // LP65 (4th) -> SUB raw
+      let w = biqRun(c0.b[0], q65h, v); w = biqRun(c0.b[1], q65h, w);      // HP65 (4th)
+      let bs = biqRun(c0.c[0], q160l, w); bs = biqRun(c0.c[1], q160l, bs); // LP160 -> BASS
+      let md = biqRun(c0.d[0], q160h, w); md = biqRun(c0.d[1], q160h, md); // HP160 -> MID
+      rs0 = s; bass0 = bs; mid0 = md;
+    }
+    { /* channel 1 */
+      let v = biqRun(c1.h[0], qH, oR[i]); v = biqRun(c1.h[1], qH, v);
+      let s = biqRun(c1.a[0], q65l, v); s = biqRun(c1.a[1], q65l, s);
+      let w = biqRun(c1.b[0], q65h, v); w = biqRun(c1.b[1], q65h, w);
+      let bs = biqRun(c1.c[0], q160l, w); bs = biqRun(c1.c[1], q160l, bs);
+      let md = biqRun(c1.d[0], q160h, w); md = biqRun(c1.d[1], q160h, md);
+      rs1 = s; bass1 = bs; mid1 = md;
+    }
+    /* phase B: stereo-linked sub compressor on the RAW band (before the EQ,
+       so it levels peaks instead of cancelling the boost) */
+    {
+      const d0 = Math.abs(rs0) > Math.abs(rs1) ? Math.abs(rs0) : Math.abs(rs1);
+      subE = d0 > subE ? de * subE + (1 - de) * d0 : drel * subE + (1 - drel) * d0;
+      let gr = compGr(D2 * Math.log(subE + 1e-9) - subThr, subRatio, subKnee);
+      if (gr > subMax) gr = subMax;
+      const tg = Math.pow(10, -gr / 20);
+      subG = tg < subG ? tg + (subG - tg) * aSubAt : tg + (subG - tg) * aSubRel;
+    }
+    /* phase C: EQ the sub (comped) and the bass, per channel */
+    let s0 = biqRun(c0.s60, qS60, rs0 * subG); s0 = biqRun(c0.s30, qS30, s0);
+    let s1 = biqRun(c1.s60, qS60, rs1 * subG); s1 = biqRun(c1.s30, qS30, s1);
+    bass0 = biqRun(c0.b90, qB90, bass0); bass0 = biqRun(c0.b140, qB140, bass0);
+    bass1 = biqRun(c1.b90, qB90, bass1); bass1 = biqRun(c1.b140, qB140, bass1);
+    /* phase D: stereo-linked bass compressor (post-EQ, keeps grit drive steady) */
+    {
+      const d0 = Math.abs(bass0) > Math.abs(bass1) ? Math.abs(bass0) : Math.abs(bass1);
+      bsE = d0 > bsE ? de * bsE + (1 - de) * d0 : drel * bsE + (1 - drel) * d0;
+      let gr = compGr(D2 * Math.log(bsE + 1e-9) - bsThr, bsRatio, bsKnee);
+      if (gr > bsMax) gr = bsMax;
+      const tg = Math.pow(10, -gr / 20);
+      bsG = tg < bsG ? tg + (bsG - tg) * aBsAt : tg + (bsG - tg) * aBsRel;
+    }
+    /* phase E: sub peak guard on comped+EQ'd sub plus synth (fast, max ~-6 dB) */
+    const ss0 = s0 + sy, ss1 = s1 + sy;
+    {
+      const d0 = Math.abs(ss0) > Math.abs(ss1) ? Math.abs(ss0) : Math.abs(ss1);
+      gdE = d0 > gdE ? d0 : gdE * gRel;
+      let tg = gdE > GC ? GC / gdE : 1;
+      if (tg < GMIN) tg = GMIN;
+      gdG = tg < gdG ? tg + (gdG - tg) * gAt : tg + (gdG - tg) * gRel;
+    }
+    /* phase F: grit (parallel, band-limited, from the EQ'd bass) + paths */
+    let gr0 = 0, gr1 = 0;
+    {
+      let g = Math.tanh(bass0 * bsG * gritK);
+      g = biqRun(c0.glp, qGlp, g); g = biqRun(c0.ghp, qGhp, g);
+      gr0 = g * gritMix;
+      g = Math.tanh(bass1 * bsG * gritK);
+      g = biqRun(c1.glp, qGlp, g); g = biqRun(c1.ghp, qGhp, g);
+      gr1 = g * gritMix;
+    }
+    SB0[i] = ss0 * gdG; SB1[i] = ss1 * gdG;
+    BA0[i] = bass0 * bsG + gr0; BA1[i] = bass1 * bsG + gr1;
+    TP0[i] = mid0; TP1[i] = mid1;
+  }
+
+  /* vocal-band (HP400) loudness of the original: the correction target */
+  await prog('Matching tone', .62);
+  const mT0 = new Float32Array(n), mT1 = new Float32Array(n);
+  const midLoud = (s0, s1) => {
+    mT0.set(s0); mT1.set(s1);
+    biq4In(qM, mT0); biq4In(qM, mT1);
+    return lufs([mT0, mT1], sr);
+  };
+  const Lm0 = midLoud(oL, oR);
+
+  /* per-path true-peak limiting (in place: detection completes before any
+     write, so OL = SL is safe), then sum, then a light final safety limiter.
+     Bass peaks are capped in their own path so they can never drag the
+     sustained 808s down with them; the top path keeps the original's own
+     peak headroom so the vocal match can actually converge. */
+  await prog('True-peak limiting', .72);
+  const CEILB = .88, CEILS = .92, CEILT = .95,
+        W0 = new Float32Array(n), W1 = new Float32Array(n),
+        G = new Float32Array(n), T = new Float32Array(n), Q = new Int32Array(n);
+  const peakOf = (a0, a1) => {
+    let p = 0;
+    for (let i = 0; i < n; i++) {
+      const x0 = Math.abs(a0[i]), x1 = Math.abs(a1[i]);
+      if (x0 > p) p = x0;
+      if (x1 > p) p = x1;
+    }
+    return p;
+  };
+  const chunkCb = i => { if ((i & 4194303) === 0) prog('True-peak limiting', .72 + .13 * i / n); };
+  let grBass = null, grSub = null, grTop = null, grFin = null;
+  if (peakOf(SB0, SB1) > .88 * CEILS)
+    grSub = limit(SB0, SB1, SB0, SB1, sr, CEILS, G, T, Q, chunkCb, .03);
+  if (peakOf(BA0, BA1) > .88 * CEILB)
+    grBass = limit(BA0, BA1, BA0, BA1, sr, CEILB, G, T, Q, chunkCb, .06);
+
+  /* optional speaker-safe highpass: on the sub path after its limiter, 4th
+     order at 27 Hz so 40 Hz 808s stay intact while 18-25 Hz rolls off; the
+     final limiter below still guarantees the ceiling afterwards */
+  if (o.safeHp) {
+    const qS = coef('hp', 27, 0, .7071, sr);
+    biq4In(qS, SB0); biq4In(qS, SB1);
+  }
+
+  /* iterative vocal-band match: adjust the TOP path only, so the low end
+     keeps its full gain regardless of what limiting did to the mids */
+  let out0 = W0, out1 = W1, grArr = null;
+  for (let it = 0; it < 3; it++) {
+    if (peakOf(TP0, TP1) > .88 * CEILT)
+      grTop = limit(TP0, TP1, TP0, TP1, sr, CEILT, G, T, Q, null);
+    for (let i = 0; i < n; i++) { W0[i] = SB0[i] + BA0[i] + TP0[i]; W1[i] = SB1[i] + BA1[i] + TP1[i]; }
+    grFin = null;
+    if (peakOf(W0, W1) > .88 * ceil)
+      grFin = limit(W0, W1, W0, W1, sr, ceil, G, T, Q, chunkCb, .04);
+    const Lm2 = midLoud(W0, W1);
+    const corr = (Lm0 <= -60) ? 0 : Lm0 - Lm2;
+    grArr = grFin || grSub || grBass;
+    if (!(Math.abs(corr) > .5)) break;
+    const kg = Math.pow(10, corr / 20);
+    for (let i = 0; i < n; i++) { TP0[i] *= kg; TP1[i] *= kg; }
+  }
+
+  /* optional taps for diagnostics: the summed low path before final limiting */
+  let tapLow0 = null, tapLow1 = null;
+  if (o.debug) {
+    tapLow0 = new Float32Array(n); tapLow1 = new Float32Array(n);
+    for (let i = 0; i < n; i++) { tapLow0[i] = SB0[i] + BA0[i]; tapLow1[i] = SB1[i] + BA1[i]; }
+  }
+
+  /* metrics */
+  await prog('Measuring', .93);
+  const to = thirdOctave(oL, oR, sr), tf = thirdOctave(out0, out1, sr);
+  let eO = 0, eF = 0;
+  for (let b = 0; b < CENTERS.length && CENTERS[b] <= 160; b++) {
+    eO += Math.pow(10, to[b] / 10); eF += Math.pow(10, tf[b] / 10);
+  }
+  const grSorted = Float32Array.from(grArr && grArr.length ? grArr : [0]).sort();
+  let peak = 0;
+  for (let i = 0; i < n; i++) {
+    const a0 = Math.abs(out0[i]), a1 = Math.abs(out1[i]);
+    if (a0 > peak) peak = a0;
+    if (a1 > peak) peak = a1;
+  }
+  const LmF = midLoud(out0, out1);
+  return {
+    L: out0, R: out1, gr: grArr || [], dbgS, tapLow0, tapLow1,
+    m: {
+      lowDelta: 10 * Math.log10(eF / (eO + 1e-20)),
+      grMean: grArr ? grArr.reduce((s, v) => s + v, 0) / grArr.length : 0,
+      grP95: grSorted[Math.floor(grSorted.length * .95)] || 0,
+      grMax: grSorted[grSorted.length - 1] || 0,
+      match: LmF - Lm0,
+      synthScale: A.scale, ceiling: ceil, peak,
+      to, tf, centers: CENTERS
+    }
+  };
+}
+
+return { coef, nst, biqRun, biqIn, biq4In, fft, lufs, thirdOctave, CENTERS, analyzeBass, compGr, limit, processTrack, LEVELS };
+});
+
+</script>
+<script>
+/* ================= Subterra 2 UI ================= */
+const CFG={levels:{
+ 1:{name:'Warm',depth:30,drive:0},
+ 2:{name:'Heavy',depth:60,drive:27},
+ 3:{name:'Deep',depth:80,drive:60},
+ 4:{name:'Annihilate',depth:100,drive:93}}};
 const $=id=>document.getElementById(id),body=document.body;
 const rm=matchMedia('(prefers-reduced-motion:reduce)').matches;
-let ctx,an,master,orig,boosted=null,lvl=2,useBoost=true,playing=false,off=0,t0=0,srcs=[],gO,gB,trackName='track',busy=false,kick=0;
+let ctx,an,master,orig=null,oL=null,oR=null,boosted=null,grCurve=null,metrics=null;
+let lvl=2,useBoost=true,playing=false,off=0,t0=0,srcs=[],gO,gB,trackName='track',busy=false,kick=0,renderTimer=0,safeHp=false;
 const fd=new Uint8Array(1024);
 const say=(m,e)=>{$('status').textContent=m;$('status').className=e?'err':''};
 const tick=()=>new Promise(r=>setTimeout(r,0));
 const fmt=s=>Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0');
 function ensure(){if(ctx)return;ctx=new (window.AudioContext||window.webkitAudioContext)();master=ctx.createGain();master.gain.value=$('vol').value/100;an=ctx.createAnalyser();an.fftSize=2048;an.smoothingTimeConstant=.6;master.connect(an);an.connect(ctx.destination)}
-/* ---------- offline DSP ---------- */
-const satCurve=(()=>{const c=new Float32Array(2049);for(let i=0;i<2049;i++)c[i]=Math.tanh(3*(i/1024-1))/3;return c})();
-const bq=(c,t,f,g=0,q=.7071)=>{const n=c.createBiquadFilter();n.type=t;n.frequency.value=f;n.gain.value=g;n.Q.value=q;return n};
-const link=(a,...n)=>n.reduce((p,x)=>(p.connect(x),x),a);
-async function rnd(buf,build){const c=new OfflineAudioContext(2,buf.length,buf.sampleRate),s=c.createBufferSource();s.buffer=buf;build(c,s);s.start();return c.startRendering()}
-function buildMain(c,s,p){const sum=c.createGain();
- link(s,bq(c,'highpass',25),bq(c,'lowshelf',p.ls[0],p.ls[1]),...p.pk.map(([f,g,q])=>bq(c,'peaking',f,g,q))).connect(sum);
- const m=c.createGain();m.channelCount=1;m.channelCountMode='explicit';s.connect(m);
- const ws=c.createWaveShaper();ws.curve=satCurve;ws.oversample='4x';const sg=c.createGain();sg.gain.value=p.sat;
- link(m,bq(c,'lowpass',130),bq(c,'lowpass',130),ws,bq(c,'lowpass',400),sg).connect(sum);
- (p.lp?link(sum,bq(c,'lowpass',p.lp,0,.6)):sum).connect(c.destination)}
-const buildMid=(c,s)=>link(s,bq(c,'highpass',300),bq(c,'highpass',300),bq(c,'lowpass',4000)).connect(c.destination);
-const buildEnv=(c,s)=>{const m=c.createGain();m.channelCount=1;m.channelCountMode='explicit';s.connect(m);link(m,bq(c,'lowpass',130)).connect(c.destination)};
-//BEGIN_FINISH
-/* ---------- loudness, bass-managed clipping, true-peak limiter (pure functions on Float32Arrays) ---------- */
-function coef(t,f,g,q,sr){const A=10**(g/40),w=2*Math.PI*f/sr,c=Math.cos(w),al=Math.sin(w)/(2*q);let b,a;
- if(t==='hs'){const k=2*Math.sqrt(A)*al;b=[A*((A+1)+(A-1)*c+k),-2*A*((A-1)+(A+1)*c),A*((A+1)+(A-1)*c-k)];a=[(A+1)-(A-1)*c+k,2*((A-1)-(A+1)*c),(A+1)-(A-1)*c-k]}
- else if(t==='hp'){b=[(1+c)/2,-(1+c),(1+c)/2];a=[1+al,-2*c,1-al]}else{b=[(1-c)/2,1-c,(1-c)/2];a=[1+al,-2*c,1-al]}
- return[b[0]/a[0],b[1]/a[0],b[2]/a[0],a[1]/a[0],a[2]/a[0]]}
-function biq(x,q){let z1=0,z2=0;for(let i=0;i<x.length;i++){const v=x[i],o=q[0]*v+z1;z1=q[1]*v-q[3]*o+z2;z2=q[2]*v-q[4]*o;x[i]=o}}
-/* ITU-R BS.1770 style loudness: K-weighting, 400 ms blocks, absolute (-70) and relative (-10 LU) gates. Streaming, no big copies. */
-function lufs(Y,sr){const K=[coef('hs',1682,4,.7071,sr),coef('hp',38.1,0,.5,sr)],hop=Math.round(.1*sr),n=Y[0].length,e=[],st=[[0,0,0,0],[0,0,0,0]];let acc=0,cnt=0;
- for(let i=0;i<n;i++){for(let c=0;c<2;c++){let x=Y[c][i];const s=st[c];for(let k=0;k<2;k++){const q=K[k],o=q[0]*x+s[2*k];s[2*k]=q[1]*x-q[3]*o+s[2*k+1];s[2*k+1]=q[2]*x-q[4]*o;x=o}acc+=x*x}
-  if(++cnt===hop){e.push(acc/hop);acc=0;cnt=0}}
- const b=[];for(let i=0;i+4<=e.length;i++)b.push((e[i]+e[i+1]+e[i+2]+e[i+3])/4);
- const L=v=>-.691+10*Math.log10(v+1e-12),ab=b.filter(v=>L(v)>-70);if(!ab.length)return-70;
- const m=ab.reduce((s,v)=>s+v,0)/ab.length,g=ab.filter(v=>L(v)>L(m)-10);return L(g.reduce((s,v)=>s+v,0)/g.length)}
-function slidingMin(a,N,o,q){const n=a.length;let h=0,t=0,j=0;
- for(let i=0;i<n;i++){const r=Math.min(n-1,i+N);for(;j<=r;j++){while(t>h&&a[q[t-1]]>=a[j])t--;q[t++]=j}while(q[h]<i-N)h++;o[i]=a[q[h]]}}
-function box(a,N,o){const n=a.length,h=N>>1;let s=0;for(let k=-h;k<=h;k++)s+=a[Math.min(n-1,Math.max(0,k))];
- for(let i=0;i<n;i++){o[i]=s/(2*h+1);s+=a[Math.min(n-1,i+h+1)]-a[Math.max(0,i-h)]}}
-/* look-ahead limiter: detects sample AND inter-sample (true) peaks via 4x windowed-sinc (16-tap) interpolation, 20 ms look-ahead, 80 ms release; gain never exceeds the ceiling */
-const TP=[.25,.5,.75].map(t=>{const w=[];for(let j=-7;j<=8;j++){const d=j-t,s=Math.abs(d)<1e-9?1:Math.sin(Math.PI*d)/(Math.PI*d);w.push(s*(.5+.5*Math.cos(Math.PI*d/8.5)))}return w});
-function limiter(S,G,T,Q,sr,ceil){const n=G.length,N=Math.round(.02*sr);
- for(let i=0;i<n;i++){let pk=0;for(let c=0;c<2;c++){const x=S[c],a=Math.abs(x[i]);if(a>pk)pk=a;if(i>6&&i<n-9)for(let t=0;t<3;t++){const w=TP[t];let v=0;for(let j=0;j<16;j++)v+=w[j]*x[i-7+j];v=Math.abs(v);if(v>pk)pk=v}}G[i]=pk>ceil?ceil/pk:1}
- slidingMin(G,N,T,Q);box(T,N,G);const a=1-Math.exp(-1/(.08*sr));let p=1;for(let i=0;i<n;i++){p=Math.min(G[i],p+(1-p)*a);G[i]=p}}
-function mixLim(LO,Y,S,G,T,Q,gd,Cl,sr){const n=G.length,g=10**(gd/20);
- const C=CFG.ceil;for(let c=0;c<2;c++)for(let i=0;i<n;i++)S[c][i]=C*Math.tanh((Cl*Math.tanh(LO[c][i]*g/Cl)+Y[c][i]*g)/C);
- limiter(S,G,T,Q,sr,CFG.ceil);for(let c=0;c<2;c++)for(let i=0;i<n;i++)S[c][i]*=G[i]}
-function grStats(G){const a=[];let s=0;for(let i=0;i<G.length;i+=8){const v=-20*Math.log10(G[i]);a.push(v);s+=v}a.sort((x,y)=>x-y);return{mean:s/a.length,p95:a[Math.floor(a.length*.95)]}}
-function subset(A,n,sr){const L=4*sr,k=6;if(n<=k*L*1.5)return A;const o=A.map(()=>new Float32Array(k*L));
- for(let j=0;j<k;j++){const s=Math.max(0,Math.floor((j+.5)/k*n-L/2));A.forEach((a,i)=>o[i].set(a.subarray(s,s+L),j*L))}return o}
-/* Y = chain output (modified in place), O = original. Splits at 400 Hz and soft-clips the bass band first (so kick and 808 peaks can't force the mids down),
-   then applies a gentle full-band soft-clip and a true-peak limiter. The gain is searched on 6 sample excerpts: the loudest gain whose FINAL (post-limiter) K-weighted loudness is
-   <= original + bias AND whose limiter gain reduction stays under a cap (bisection, so it cannot run away). Then one full render. */
-async function finish(Y,O,sr,p,cb){const n=Y[0].length,Cl=p.clip??CFG.clip;
- const LO=Y.map(y=>{const o=Float32Array.from(y);biq(o,coef('lp',CFG.split,0,.7071,sr));biq(o,coef('lp',CFG.split,0,.7071,sr));return o});
- for(let c=0;c<2;c++)for(let i=0;i<n;i++)Y[c][i]-=LO[c][i];
- const[a0,a1,b0,b1,o0,o1]=subset([LO[0],LO[1],Y[0],Y[1],O[0],O[1]],n,sr),m=a0.length,
-  S=[new Float32Array(m),new Float32Array(m)],G=new Float32Array(m),T=new Float32Array(m),Q=new Int32Array(m),tgt=lufs([o0,o1],sr)+p.bias;
- const ev=gd=>{mixLim([a0,a1],[b0,b1],S,G,T,Q,gd,Cl,sr);const L=lufs(S,sr),g=grStats(G);return L<=tgt&&g.mean<=CFG.grMean&&g.p95<=CFG.grP95};
- mixLim([a0,a1],[b0,b1],S,G,T,Q,0,Cl,sr);let lo=tgt-lufs(S,sr)-10,hi=lo+18;
- for(let k=0;k<9&&hi-lo>.15;k++){const mid=(lo+hi)/2;ev(mid)?lo=mid:hi=mid;if(cb)await cb(k)}
- const F=[new Float32Array(n),new Float32Array(n)],FG=new Float32Array(n);mixLim(LO,Y,F,FG,new Float32Array(n),new Int32Array(n),lo,Cl,sr);
- const measureTP=()=>{let peak=0;const X=F[0],Z=F[1];for(let i=7;i<n-9;i++)for(let c=0;c<2;c++){const x=c?Z:X;for(let t=0;t<3;t++){const w=TP[t];let v=0;for(let j=0;j<16;j++)v+=w[j]*x[i-7+j];peak=Math.max(peak,Math.abs(v))}}return peak};
- // Keep true-peak correction inside the gain search: regenerate the render at a
- // lower gain instead of scaling the completed file after the limiter.
- let tp=measureTP();for(let pass=0;tp>CFG.ceil*.999&&pass<8;pass++){
-  lo+=20*Math.log10((CFG.ceil*.999)/tp);
-  mixLim(LO,Y,F,FG,new Float32Array(n),new Int32Array(n),lo,Cl,sr);
-  tp=measureTP();
- }
- // Last-resort safety guard for unusual material that does not converge.
- if(tp>CFG.ceil){const safe=CFG.ceil/tp;for(let c=0;c<2;c++)for(let i=0;i<n;i++)F[c][i]*=safe}
- const g=grStats(FG);return{S:F,L:lufs(F,sr),gd:lo,meanGR:g.mean,p95GR:g.p95,tgt}}
-//END_FINISH
-async function process(l){const p=CFG.levels[l],sr=orig.sampleRate,n=orig.length;
- const main=await rnd(orig,(c,s)=>buildMain(c,s,p));const Y=[main.getChannelData(0),main.getChannelData(1)];
- if(p.duck){const mid=await rnd(orig,buildMid),env=(await rnd(orig,buildEnv)).getChannelData(0),M=[mid.getChannelData(0),mid.getChannelData(1)];
-  const r=Math.exp(-1/(.12*sr)),sm=new Float32Array(n);let st=0;for(let i=0;i<n;i++){st=r*st+(1-r)*Math.abs(env[i]);sm[i]=st}
-  const smp=[];for(let i=0;i<n;i+=16)smp.push(sm[i]);smp.sort((a,b)=>a-b);const ref=smp[Math.floor(smp.length*.92)]||1;
-  for(let i=0;i<n;i++){const k=Math.min(1,sm[i]/ref)*p.duck;Y[0][i]-=M[0][i]*k;Y[1][i]-=M[1][i]*k}}
- await tick();const O=[orig.getChannelData(0),orig.getChannelData(1)];
- const r=await finish(Y,O,sr,p,async k=>{say(`Matching loudness, pass ${k+1}…`);await tick()});
- const out=ctx.createBuffer(2,n,sr);out.copyToChannel(r.S[0],0);out.copyToChannel(r.S[1],1);return out}
+async function prog(name,frac){say(name+' '+Math.round(frac*100)+'%');await tick()}
+
+/* ---------- render pipeline ---------- */
+async function render(){
+  if(!oL||busy)return;busy=true;
+  const was=playing,at=pos();
+  pause();['play','seek','dl','dep','drv'].forEach(i=>$(i).disabled=true);
+  const t0=performance.now();
+  try{
+    const res=await SDSP.processTrack(oL,oR,orig.sampleRate,
+      {depth:+$('dep').value/100,drive:+$('drv').value/100,level:lvl,safeHp},prog);
+    boosted=ctx.createBuffer(2,oL.length,orig.sampleRate);
+    boosted.copyToChannel(res.L,0);boosted.copyToChannel(res.R,1);
+    grCurve=res.gr;metrics=res.m;
+    drawSpectrum();updateChips();
+    const dt=((performance.now()-t0)/1000).toFixed(1);
+    say(CFG.levels[lvl].name+' ready in '+dt+' s \u2014 low end +'+metrics.lowDelta.toFixed(1)+' dB vs original.');
+    off=at;['play','seek','dl','dep','drv'].forEach(i=>$(i).disabled=false);
+    if(was)start(at);
+  }catch(e){
+    say('Rendering failed. Try a shorter track or another browser.',1);
+    ['play','seek','dl','dep','drv'].forEach(i=>$(i).disabled=false);
+  }
+  busy=false;
+}
+function updateChips(){
+  if(!metrics)return;
+  $('cLow').innerHTML='Low end <b>+'+metrics.lowDelta.toFixed(1)+' dB</b>';
+  const v=Math.abs(metrics.match);
+  $('cVoc').innerHTML='Vocals <b>'+(metrics.match>=0?'+':'\u2212')+v.toFixed(1)+' dB</b>';
+  $('cLim').innerHTML='Peak GR <b>'+metrics.grMax.toFixed(1)+' dB</b>';
+}
+function scheduleRender(){
+  if(!oL||busy)return;
+  clearTimeout(renderTimer);
+  say('Re-rendering\u2026');
+  renderTimer=setTimeout(()=>render(),600);
+}
+
+/* ---------- spectrum compare ---------- */
+const spec=$('spec'),sx=spec.getContext('2d');
+function drawSpectrum(){
+  if(!metrics)return;
+  const d=Math.min(devicePixelRatio||1,2),w=spec.clientWidth*d,h=spec.clientHeight*d;
+  if(spec.width!==Math.round(w)||spec.height!==Math.round(h)){spec.width=Math.round(w);spec.height=Math.round(h)}
+  const to=metrics.to,tf=metrics.tf,c=metrics.centers,n=c.length;
+  const maxDb=Math.max.apply(null,tf.concat(to)),min=maxDb-42,range=maxDb-min;
+  const acc=getComputedStyle(body).getPropertyValue('--acc').trim()||'#F0B35A';
+  sx.clearRect(0,0,w,h);
+  const bw=w/n,g=h-18*d,base=h-14*d;
+  for(let i=0;i<n;i++){
+    const hO=Math.max(1*d,(to[i]-min)/range*g),hF=Math.max(1*d,(tf[i]-min)/range*g);
+    sx.fillStyle='#3f4450';sx.fillRect(i*bw+bw*.14,base-hO,bw*.3,hO);
+    sx.fillStyle=acc;sx.fillRect(i*bw+bw*.52,base-hF,bw*.3,hF);
+  }
+  sx.fillStyle='#565b66';sx.font=(11*d)+'px "Hanken Grotesk",sans-serif';sx.textAlign='center';
+  const marks={31.5:'31',63:'63',125:'125',250:'250',500:'500',1000:'1k',2000:'2k',4000:'4k',8000:'8k',16000:'16k'};
+  for(let i=0;i<n;i++)if(marks[c[i]])sx.fillText(marks[c[i]],i*bw+bw/2,h-2*d);
+}
+
 /* ---------- playback ---------- */
 const pos=()=>playing?Math.min(orig.duration,ctx.currentTime-t0):off;
 function stopSrc(){srcs.forEach(s=>{try{s.stop()}catch(e){}});srcs=[]}
 function start(at){stopSrc();ensure();if(ctx.state!=='running')ctx.resume();
  gO=ctx.createGain();gB=ctx.createGain();gO.connect(master);gB.connect(master);setAB(true);
  for(const [b,g] of [[orig,gO],[boosted,gB]]){const s=ctx.createBufferSource();s.buffer=b;s.connect(g);s.start(0,at);srcs.push(s)}
- t0=ctx.currentTime-at;playing=true;$('play').textContent='❚❚';$('play').setAttribute('aria-label','Pause')}
-function pause(){if(!playing)return;off=pos();stopSrc();playing=false;$('play').textContent='▶';$('play').setAttribute('aria-label','Play')}
+ t0=ctx.currentTime-at;playing=true;$('play').textContent='\u275A\u275A';$('play').setAttribute('aria-label','Pause')}
+function pause(){if(!playing)return;off=pos();stopSrc();playing=false;$('play').textContent='\u25B6';$('play').setAttribute('aria-label','Play')}
 function setAB(instant){if(!gO)return;const t=ctx.currentTime;for(const [g,v] of [[gO,useBoost?0:1],[gB,useBoost?1:0]]){g.gain.cancelScheduledValues(t);g.gain.setTargetAtTime(v,t,instant?.001:.015)}
  $('aOrig').setAttribute('aria-pressed',!useBoost);$('aBoost').setAttribute('aria-pressed',useBoost)}
-async function setLevel(l){lvl=l;body.dataset.l=l;
- document.querySelectorAll('.lv').forEach(b=>b.setAttribute('aria-checked',b.dataset.l==l));
- $('thumb').style.setProperty('--s',(2*l-1)/8);
- $('warn').textContent=l==4?'Dangerously loud and distorted. Keep your volume low.':l==3?'Extremely loud bass. Lower your volume first.':'';
- if(!orig||busy)return;busy=true;const was=playing,at=pos();pause();['play','dl'].forEach(i=>$(i).disabled=true);
- try{boosted=await process(l);say(`${CFG.levels[l].name} is ready.`);off=at;['play','dl'].forEach(i=>$(i).disabled=false);if(was)start(at)}
- catch(e){say('Rendering failed. Try a shorter track or another browser.',1)}busy=false}
+async function setLevel(l){
+  lvl=l;body.dataset.l=l;
+  document.querySelectorAll('.lv').forEach(b=>b.setAttribute('aria-checked',b.dataset.l==l));
+  $('thumb').style.setProperty('--s',(2*l-1)/8);
+  $('warn').textContent=l==4?'18\u201320 Hz content. Keep your volume low; use the speaker-safe filter on small systems.':l==3?'Deep sub energy ahead \u2014 mind small speakers.':'';
+  const p=CFG.levels[l];
+  $('dep').value=p.depth;$('depV').textContent=p.depth+'%';
+  $('drv').value=p.drive;$('drvV').textContent=p.drive+'%';
+  if(!oL||busy)return;
+  render();
+}
 /* ---------- file loading ---------- */
 async function load(f){if(!f)return;
- if(!/^audio\//.test(f.type)&&!/\.(mp3|wav|ogg)$/i.test(f.name)){say('That isn’t an audio file. Try an MP3, WAV or OGG.',1);return}
+ if(!/^audio\//.test(f.type)&&!/\.(mp3|wav|ogg)$/i.test(f.name)){say('That isn\u2019t an audio file. Try an MP3, WAV or OGG.',1);return}
  if(f.size>60e6){say('That file is over 60 MB. Try a smaller one.',1);return}
- ensure();pause();say('Decoding…');
+ ensure();pause();say('Decoding\u2026');
  try{const d=await ctx.decodeAudioData(await f.arrayBuffer());
   if(d.numberOfChannels===2)orig=d;else{orig=ctx.createBuffer(2,d.length,d.sampleRate);for(let c=0;c<2;c++)orig.copyToChannel(d.getChannelData(0),c)}
+  oL=orig.getChannelData(0);oR=orig.getChannelData(1);
   trackName=f.name.replace(/\.[^.]+$/,'').replace(/[^\w\- ]+/g,'').trim().slice(0,60)||'track';off=0;$('seek').disabled=false;
+  ['dep','drv'].forEach(i=>$(i).disabled=false);
   const l=lvl;busy=false;await setLevel(l)}
- catch(e){orig=null;say('That file couldn’t be decoded. Try an MP3 or WAV under 60 MB.',1)}}
-/* ---------- download (WAV inside a .zip: the host only allows listed file types) ---------- */
+ catch(e){orig=null;oL=null;say('That file couldn\u2019t be decoded. Try an MP3 or WAV under 60 MB.',1)}}
+/* ---------- download (WAV, zipped where the host requires it) ---------- */
 function wav(b){const n=b.length,u=new ArrayBuffer(44+n*4),v=new DataView(u),w=(o,s)=>[...s].forEach((c,i)=>v.setUint8(o+i,c.charCodeAt(0)));
  w(0,'RIFF');v.setUint32(4,36+n*4,true);w(8,'WAVEfmt ');v.setUint32(16,16,true);v.setUint16(20,1,true);v.setUint16(22,2,true);v.setUint32(24,b.sampleRate,true);v.setUint32(28,b.sampleRate*4,true);v.setUint16(32,4,true);v.setUint16(34,16,true);w(36,'data');v.setUint32(40,n*4,true);
  const o=new Int16Array(u,44),L=b.getChannelData(0),R=b.getChannelData(1);for(let i=0;i<n;i++){o[2*i]=Math.max(-1,Math.min(1,L[i]))*32767;o[2*i+1]=Math.max(-1,Math.min(1,R[i]))*32767}return new Uint8Array(u)}
@@ -243,42 +844,50 @@ function zip(name,d){const nb=new TextEncoder().encode(name),crc=crc32(d),sz=d.l
  c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint32(16,crc,true);c.setUint32(20,sz,true);c.setUint32(24,sz,true);c.setUint16(28,nb.length,true);
  e.setUint32(0,0x06054b50,true);e.setUint16(8,1,true);e.setUint16(10,1,true);e.setUint32(12,46+nb.length,true);e.setUint32(16,30+nb.length+sz,true);
  return new Blob([l,nb,d,c,nb,e],{type:'application/zip'})}
-$('dl').onclick=async()=>{if(!boosted)return;const base=`${trackName}-subterra-${CFG.levels[lvl].name.toLowerCase()}`,w=wav(boosted);
+$('dl').onclick=async()=>{if(!boosted)return;const base=trackName+'-subterra2-'+CFG.levels[lvl].name.toLowerCase(),w=wav(boosted);
  try{const dl=window.claude?await claude.use('downloads'):null;
   if(dl)await dl.save({filename:base+'.zip',data:zip(base+'.wav',w)});
   else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([w],{type:'audio/wav'}));a.download=base+'.wav';a.click()}
-  say('Download ready.')}catch(e){if(!e||e.code!=='declined')say('The download couldn’t be saved. Try again.',1)}};
+  say('Download ready.')}catch(e){if(!e||e.code!=='declined')say('The download couldn\u2019t be saved. Try again.',1)}};
 /* ---------- UI wiring ---------- */
 $('pick').onclick=()=>$('file').click();$('file').onchange=e=>load(e.target.files[0]);
 const dz=$('drop');['dragover','dragenter'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.add('over')}));
 ['dragleave','drop'].forEach(t=>dz.addEventListener(t,e=>{e.preventDefault();dz.classList.remove('over')}));dz.addEventListener('drop',e=>load(e.dataTransfer.files[0]));
-/* Level 4 sits behind two warnings; each can only be accepted after a 3 second wait */
-function ask(title,msg){return new Promise(res=>{const d=$('gate'),ok=$('gok'),no=$('gno');let n=3;$('gh').textContent=title;$('gmsg').textContent=msg;ok.disabled=true;ok.textContent=`Wait ${n}…`;
- const iv=setInterval(()=>{n--;if(n>0)ok.textContent=`Wait ${n}…`;else{clearInterval(iv);ok.disabled=false;ok.textContent='I understand'}},1000);
+/* Level 4 sits behind two warnings; the first offers the speaker-safe filter */
+function ask(title,msg,withSafe){return new Promise(res=>{const d=$('gate'),ok=$('gok'),no=$('gno');let n=3;$('gh').textContent=title;$('gmsg').textContent=msg;$('safeRow').hidden=!withSafe;ok.disabled=true;ok.textContent='Wait '+n+'\u2026';
+ const iv=setInterval(()=>{n--;if(n>0)ok.textContent='Wait '+n+'\u2026';else{clearInterval(iv);ok.disabled=false;ok.textContent='I understand'}},1000);
  const done=v=>{clearInterval(iv);d.close();res(v)};ok.onclick=()=>done(true);no.onclick=()=>done(false);d.oncancel=e=>{e.preventDefault();done(false)};d.showModal()})}
 document.querySelectorAll('.lv').forEach(b=>b.onclick=async()=>{const l=+b.dataset.l;
- if(l==4&&lvl!=4){if(!(await ask('Warning 1 of 2','Annihilate is far louder and more distorted than any other level. Turn your volume down to a quarter or less before you continue.')))return;
-  if(!(await ask('Warning 2 of 2','Extreme bass can damage speakers and headphones and can hurt your ears. Don’t use it on small or cheap speakers, and stop if anything buzzes or rattles.')))return}
+ if(l==4&&lvl!=4){
+  if(!(await ask('Warning 1 of 2','Annihilate reaches 18\u201320 Hz \u2014 deeper than most systems can play. On small speakers deep bass turns into rattle and distortion. Turn your volume down to a quarter or less before you continue.',true)))return;
+  safeHp=$('safe').checked;
+  if(!(await ask('Warning 2 of 2','Extreme sub energy can damage speakers and headphones, and sustained 18\u201320 Hz tones are felt more than heard. Stop if anything buzzes, rattles or hurts.')))return}
  setLevel(l)});
 $('play').onclick=()=>{if(!boosted)return;playing?pause():start(off>=orig.duration-.05?0:off)};
 $('aOrig').onclick=()=>{useBoost=false;setAB()};$('aBoost').onclick=()=>{useBoost=true;setAB()};
 $('vol').oninput=e=>{if(master)master.gain.value=e.target.value/100};
 $('seek').oninput=e=>{if(!orig)return;const t=e.target.value/1000*orig.duration;playing?start(t):off=t};
-/* ---------- visuals: the subwoofer cone ---------- */
+$('dep').oninput=e=>{$('depV').textContent=e.target.value+'%';scheduleRender()};
+$('drv').oninput=e=>{$('drvV').textContent=e.target.value+'%';scheduleRender()};
+addEventListener('resize',()=>drawSpectrum());
+/* ---------- visuals: the subwoofer cone + live meters ---------- */
 const cv=$('cv'),x=cv.getContext('2d');
 function frame(){requestAnimationFrame(frame);const t=performance.now()/1000;
  if(orig){$('time').textContent=fmt(pos())+' / '+fmt(orig.duration);if(playing){$('seek').value=pos()/orig.duration*1000;if(pos()>=orig.duration-.02){pause();off=0}}}
+ /* live limiter meter */
+ if(grCurve&&grCurve.length){const i=Math.min(grCurve.length-1,Math.max(0,Math.round(pos()*200)));const g=grCurve[i]||0;
+  $('grFill').style.width=Math.min(100,g/12*100)+'%';$('grVal').textContent='\u2212'+g.toFixed(1)+' dB'}
  let k=0;if(an&&playing){an.getByteFrequencyData(fd);let s=0;for(let i=1;i<6;i++)s+=fd[i];k=s/5/255;k=Math.max(0,(k-.35)/.65)}
  kick+=(k-kick)*(k>kick?.55:.1);if(rm)kick=0;
  document.documentElement.style.setProperty('--kick',kick.toFixed(3));
- const sh=!rm&&playing&&lvl>1?kick*(lvl==4?13:lvl==3?7:2.5):0;document.querySelector('.hero').style.transform=sh?`translate(${(Math.random()-.5)*sh}px,${(Math.random()-.5)*sh}px)`:'';
- const d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth*d,h=cv.clientHeight*d;if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h}
+ const sh=!rm&&playing&&lvl>1?kick*(lvl==4?8:lvl==3?7:2.5):0;document.querySelector('.hero').style.transform=sh?'translate('+((Math.random()-.5)*sh)+'px,'+((Math.random()-.5)*sh)+'px)':'';
+ const d=Math.min(devicePixelRatio||1,2),w=cv.clientWidth*d,h=cv.clientHeight*d;if(cv.width!==Math.round(w)||cv.height!==Math.round(h)){cv.width=Math.round(w);cv.height=Math.round(h)}
  const cx=w/2,cy=h/2,R=Math.min(w,h)*.33,acc=getComputedStyle(body).getPropertyValue('--acc').trim()||'#F0B35A';x.clearRect(0,0,w,h);
  for(let i=0;i<96;i++){const v=playing?fd[i+1]/255:.05+.03*Math.sin(t*.9+i*.35),a=i/96*Math.PI*2-Math.PI/2,r0=R*1.2,r1=r0+R*.55*Math.pow(v,1.5)+d;
   x.strokeStyle=i<6?acc:'rgba(138,144,157,.55)';x.lineWidth=d*2.4;x.beginPath();x.moveTo(cx+Math.cos(a)*r0,cy+Math.sin(a)*r0);x.lineTo(cx+Math.cos(a)*r1,cy+Math.sin(a)*r1);x.stroke()}
  x.strokeStyle='#15171D';x.lineWidth=R*.12;x.beginPath();x.arc(cx,cy,R*1.08,0,7);x.stroke();
  const amp=rm?.2:1,idle=playing?0:.012*Math.sin(t*1.1);
- for(let j=0;j<6;j++){const rr=R*(1-j*.15)*(1+(kick*.07*(1+j*.3)*amp)+idle),jit=lvl==4?kick*.11:lvl==3?kick*.05:0;x.globalAlpha=.95-j*.13;x.strokeStyle=acc;x.lineWidth=d*(2.6-j*.25);x.beginPath();
+ for(let j=0;j<6;j++){const rr=R*(1-j*.15)*(1+(kick*.07*(1+j*.3)*amp)+idle),jit=lvl==4?kick*.05:lvl==3?kick*.05:0;x.globalAlpha=.95-j*.13;x.strokeStyle=acc;x.lineWidth=d*(2.6-j*.25);x.beginPath();
   for(let q=0;q<=72;q++){const a=q/72*Math.PI*2,r=rr*(1+(Math.random()-.5)*jit);q?x.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r):x.moveTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r)}x.stroke()}
  x.globalAlpha=1;const cr=R*.2*(1+kick*.12*amp),g=x.createRadialGradient(cx-cr*.3,cy-cr*.3,cr*.1,cx,cy,cr);g.addColorStop(0,'#2b2e38');g.addColorStop(1,'#0c0d11');x.fillStyle=g;x.beginPath();x.arc(cx,cy,cr,0,7);x.fill()}
 addEventListener('load',()=>{body.classList.add('open');$('thumb').style.setProperty('--s',.375)});
